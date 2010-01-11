@@ -205,23 +205,33 @@ LOCAL_C_INCLUDES:=$(LOCAL_PATH)/lib/ $(LOCAL_PATH)/libelf/ $(LOCAL_PATH)/libebl/
 include $(BUILD_HOST_STATIC_LIBRARY)
 
 #
-# libebl_arm
+# libebl_$(TARGET_ARCH)
 #
 
 include $(CLEAR_VARS)
 
 #LOCAL_SRC_FILES:=$(COMMON_SOURCES)
+ifeq ($(TARGET_ARCH),arm)
 LOCAL_SRC_FILES+=\
         libebl/arm_destr.c \
         libebl/arm_init.c \
         libebl/arm_symbol.c
+LOCAL_MODULE:=libebl_arm
+endif
+
+ifeq ($(TARGET_ARCH),mips)
+LOCAL_SRC_FILES+=\
+        libebl/mips_destr.c \
+        libebl/mips_init.c \
+        libebl/mips_symbol.c
+LOCAL_MODULE:=libebl_mips
+endif
 
 ifeq ($(HOST_OS),linux)
 endif
 ifeq ($(HOST_OS),darwin)
 endif
 
-LOCAL_MODULE:=libebl_arm
 
 LOCAL_CFLAGS += -include $(LOCAL_PATH)/config.h
 ifeq ($(HOST_OS),windows)
